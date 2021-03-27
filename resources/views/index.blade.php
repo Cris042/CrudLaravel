@@ -29,14 +29,11 @@
             {
                 width: 70%;
                 height: 500px;
-
                 margin-left: 15%;
                 margin-top: 8%;
                 padding: 10px;
-
                 border: 6px solid rgba(220, 220, 220, 0.932);
-                background-clip: padding-box;
-                
+                background-clip: padding-box;              
                 background: #f5f5f5;
             }
 
@@ -48,19 +45,15 @@
             .card-cadastro
             {
                 float: left;
-
                 height: 100%;
-
                 background-clip: padding-box;
                 border-right: 2px solid rgba(220, 220, 220, 0.932);
             }
 
             .card-users
             {
-                float: right;
-                
+                float: right;                
                 height: 100%;
-
                 background-clip: padding-box;
                 border-left: 2px solid rgba(220, 220, 220, 0.932);
             }
@@ -69,9 +62,7 @@
             {
                 font-size: 22px;
                 color: #000;
-
                 text-align: center;
-
                 margin-top: 20px;
             }
 
@@ -79,10 +70,8 @@
             {
                 width: 90%;
                 max-height: 50%;
-
                 margin-left: 5%;
-                margin-top: 20%;
-
+                margin-top: 10%;
                 overflow-y: auto;
             }
 
@@ -90,19 +79,14 @@
             {
                 height: 55px;
                 width: 80%;
-
                 font-size: 20px;
-
                 margin-left: 10%;
                 padding-left: 10px;
                 margin: none;
                 margin-bottom: 3px;
-
                 background: transparent;
-
                 border: 1px solid #000;
-                border-radius: 5px;
-                
+                border-radius: 5px;                
                 outline: none;
             }
 
@@ -121,64 +105,67 @@
             .card-content > ul > li
             {
                 height: 60px;
-                width: 100%;
-
+                width: 90%;
+                margin-left: 5%;
                 text-decoration: none;
-
+                list-style: none;
                 background:  #f5f5f5;
-
                 background-clip: padding-box;
                 border: 2px solid rgba(220, 220, 220, 0.932);
-
-                margin-top: 4px;
-
+                margin-bottom: 4px;
                 border-radius: 5px;
-
                 padding: 18px 10px 10px 10px;
             }
 
             
             .btn-edit
             {
-                width: 30%;
-
-               
+                width: 60px;
+                height: 30px;                     
                 color: #000;
-
+                position: relative;
+                display: block;   
                 text-decoration: none;
-
-                margin-left: 55%;
-                margin-right: 5%;
-              
+                left: 60%;
+                margin-top: -5%;              
                 border-radius: 5px;
-                border: 2px solid  #000;
-
+                border: 2px solid  #c25208;
                 padding: 5px;
             }
 
             .btn-delet
             {
-                width: 30%;
-
-               
-                color: #000;
-                
-                text-decoration: none;
-
+                width: 60px;
+                height: 30px;                    
+                color: #000;   
+                position: relative;
+                display: block;           
+                text-decoration: none;        
+                left: 80%;
+                margin-top: -7.8%;       
                 border-radius: 5px;
                 border: 2px solid #a30b0b;
-
                 padding: 4px;
             }
 
             .btn-delet:hover
             {
                 background: #a30b0b;
+                color: #fff;
             }
 
             .btn-edit:hover
             {
-                background: #e6f562;
+                background: #c25208;
+                color: #fff;
+            }
+
+            .msn-erro
+            {
+                margin-top: 10px;
+                margin-left: 10px;
+                text-align: left;
+                color: red;
             }
         </style>
 
@@ -190,14 +177,23 @@
             <div class = "card-cadastro w50">
                   <p class = "title"> Cadastre-se </p>
 
-                  <div class = "card-content">
-                      <form>
+                    @if ($errors->any())
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li class="msn-erro">{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+
+                    <div class = "card-content">
+                      <form action="{{ route('user.store') }}" method="POST">
+                          @csrf
                           <input class = "input-w80" type = "text" name = "name" placeholder="Nome" />
                           <input class = "input-w80" type = "text" name = "email" placeholder="E-mail" />
                           <input class = "input-w80" type = "password" name = "password" placeholder="Senha" />
                           <input class = "input-w80 btn-input" type = "submit" />
-                      </from>                     
-                  </div><!--\ card-content !-->
+                      </form>                     
+                    </div><!--\ card-content !-->
 
             </div><!--\ card-cadastro !-->
 
@@ -206,42 +202,13 @@
 
                   <div class="card-content">
                        <ul>
+                        @foreach ( $users as $user ) 
                             <li> 
-                               user 01 
-                               <a class = "btn-edit" href = "editar?id=1"> Editar </a> 
-                               <a class = "btn-delet" href = "deletar?id=1"> Deletar </a>
+                               {{ $user->name }}
+                               <a class = "btn-edit" href = "editar?id={{ $user->id }}"> Editar </a> 
+                               <a class = "btn-delet" href = "deletar?id={{ $user->id }}"> Deletar </a>
                             </li>
-
-                            <li> 
-                               user 02
-                               <a class = "btn-edit" href = "editar?id=1"> Editar </a> 
-                               <a class = "btn-delet" href = "deletar?id=1"> Deletar </a>
-                            </li>
-
-                            <li> 
-                               user 03
-                               <a class = "btn-edit" href = "editar?id=1"> Editar </a> 
-                               <a class = "btn-delet" href = "deletar?id=1"> Deletar </a>
-                            </li>
-
-                            <li> 
-                               user 01 
-                               <a class = "btn-edit" href = "editar?id=1"> Editar </a> 
-                               <a class = "btn-delet" href = "deletar?id=1"> Deletar </a>
-                            </li>
-
-                            <li> 
-                               user 02
-                               <a class = "btn-edit" href = "editar?id=1"> Editar </a> 
-                               <a class = "btn-delet" href = "deletar?id=1"> Deletar </a>
-                            </li>
-
-                            <li> 
-                               user 03
-                               <a class = "btn-edit" href = "editar?id=1"> Editar </a> 
-                               <a class = "btn-delet" href = "deletar?id=1"> Deletar </a>
-                            </li>
-
+                        @endforeach
                        </ul>
                   </div><!--\ card-content !-->
 

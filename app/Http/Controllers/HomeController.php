@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Http\Requests\Validation;
 
 class HomeController extends Controller
 {
@@ -13,7 +15,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('index');
+        $users = User::all();
+        return view('index')->with('users',$users);
     }
 
     /**
@@ -32,9 +35,15 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Validation $request)
     {
-        //
+        $users = new User();
+        $users->name = $request->get('name');
+        $users->email = $request->get('email');
+        $users->password = $request->get('password');
+        $users->save();
+
+        return redirect()->route('index');
     }
 
     /**
