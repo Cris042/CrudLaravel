@@ -35,7 +35,7 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Validation $request)
+    public function store( Validation $request )
     {
         $users = new User();
         $users->name = $request->get('name');
@@ -52,9 +52,16 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show( $id )
     {
-        //
+        $user = User::find( $id );
+
+        if ( !$user ) 
+        {
+            return redirect()->route('index');
+        }
+
+        return view('editar', compact('user'));
     }
 
     /**
@@ -63,7 +70,7 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit( $id )
     {
         //
     }
@@ -75,9 +82,17 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update( Validation $request, $id)
     {
-        //
+        if ( !$user = User::find( $id ) ) 
+        {
+            return redirect()->back();
+        }
+
+        $data = $request->all();
+        $user->update( $data );
+
+        return redirect()->route('index');
     }
 
     /**
@@ -86,8 +101,24 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( $id )
     {
-        //
+        if ( !$user = User::find( $id ) ) 
+        {
+            return redirect()->back();
+        }
+
+        $user->delete();
+
+        return redirect()->route('index');
+    }
+
+    public function search( Request $request )
+    {
+        $filters = $request->except('_token');
+
+        $users = User::where('name', 'LIKE', "%{$request->search}%")->orWhere('email', 'LIKE', "%{$request->search}%")->paginate();
+
+        return view('index', compact('users', 'filters'));
     }
 }

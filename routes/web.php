@@ -13,5 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/','HomeController@index')->name('index');
 Route::post('/creatUser', 'HomeController@store')->name('user.store');
+Route::put('/editarUser/{id}', 'HomeController@update')->name('user.edit');
+Route::delete('/userDelet/{id}','HomeController@destroy')->name('deletar');
+Route::any('/PesquisarUser', 'HomeController@search')->name('user.search');
+Route::get('/','HomeController@index')->name('index');
+Route::get('/editar/{id}','HomeController@show')->name('editar');
